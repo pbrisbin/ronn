@@ -1,5 +1,7 @@
 module Ronn.Opt
-  ( Opt (..)
+  ( Opts (..)
+  , optsToDefinitions
+  , Opt (..)
   , optToDefinition
   , optionsSection
   , synopsisSection
@@ -13,6 +15,19 @@ import Data.Maybe (fromMaybe, isJust)
 import Data.String (IsString (..))
 import Ronn.AST
 import Ronn.Argument
+
+data Opts
+  = OptsOr Opts
+  | OptsAnd Opts
+  | OptsMany [Opts]
+  | OptsOne Opt
+
+optsToDefinitions :: Opts -> [RonnDefinition]
+optsToDefinitions = \case
+  OptsOr opts -> optsToDefinitions opts
+  OptsAnd opts -> optsToDefinitions opts
+  OptsMany opts -> concatMap optsToDefinitions opts
+  OptsOne opts -> [optToDefinition opts]
 
 data Opt = Opt
   { shorts :: [Char]
@@ -28,48 +43,22 @@ instance HasArgument Opt where
 optToDefinition :: Opt -> RonnDefinition
 optToDefinition opt =
   RonnDefinition
-    { name = optPartComma opt
+    { name = mconcat $ intersperse ", " $ optParts opt
     , description = fromMaybe (RonnLine []) opt.help
     , content = Nothing
     }
 
--- | Render an 'Opt' to a pipe-separated element
---
--- Example: @`-f`|`--foo`=<ARG>@
-optPartPipe :: Opt -> RonnPart
-optPartPipe = mconcat . intersperse "\\|" . optParts
-
--- | Render an 'Opt' to a comma-separated element
---
--- Example: @`-f`, `--foo`=<ARG>@
-optPartComma :: Opt -> RonnPart
-optPartComma = mconcat . intersperse ", " . optParts
-
-optParts :: Opt -> [RonnPart]
-optParts opt
-  | null opt.shorts && null opt.longs
-  , Just arg <- opt.argument =
-      [RonnVariable $ fromString arg]
-  | otherwise =
-      map short opt.shorts <> map (addArgument opt . long) opt.longs
- where
-  short :: Char -> RonnPart
-  short = RonnCode . fromString . ('-' :) . pure
-
-  long :: String -> RonnPart
-  long = RonnCode . fromString . ("--" <>)
-
-optionsSection :: [Opt] -> RonnSection
+optionsSection :: Opts -> RonnSection
 optionsSection opts =
   RonnSection
     { name = "OPTIONS"
-    , content = [RonnDefinitions $ map optToDefinition opts]
+    , content = [RonnDefinitions $ optsToDefinitions opts]
     }
 
 synopsisSection
   :: String
   -- ^ Program name
-  -> [Opt]
+  -> Opts
   -> RonnSection
 synopsisSection name opts =
   RonnSection
@@ -77,13 +66,32 @@ synopsisSection name opts =
     , content = [RonnGroups [RonnLines [synopsisLine name opts]]]
     }
 
-synopsisLine :: String -> [Opt] -> RonnLine
-synopsisLine name =
-  RonnLine
-    . (RonnCode (fromString name) :)
-    . map (\opt -> bracketize opt $ optPartPipe opt)
+synopsisLine :: String -> Opts -> RonnLine
+synopsisLine name = RonnLine . (RonnCode (fromString name) :) . go
+ where
+  go :: Opts -> [RonnPart]
+  go = \case
+    OptsOr os -> [RonnBrackets $ mconcat $ intersperse " \\| " $ go os]
+    OptsAnd os -> [RonnParens $ mconcat $ intersperse " " $ go os]
+    OptsMany os -> concatMap go os
+    OptsOne opt -> map (bracketize opt) $ optParts opt
 
-bracketize :: Opt -> RonnPart -> RonnPart
-bracketize opt
-  | isJust opt.default_ = RonnBrackets
-  | otherwise = id
+  bracketize :: Opt -> RonnPart -> RonnPart
+  bracketize opt
+    | isJust opt.default_ = RonnBrackets
+    | otherwise = id
+
+optParts :: Opt -> [RonnPart]
+optParts opt
+  | null opt.shorts && null opt.longs
+  , Just arg <- opt.argument =
+      [RonnVariable $ fromString arg]
+  | otherwise =
+      map (addArgument " " opt . short) opt.shorts
+        <> map (addArgument "=" opt . long) opt.longs
+ where
+  short :: Char -> RonnPart
+  short = RonnCode . fromString . ('-' :) . pure
+
+  long :: String -> RonnPart
+  long = RonnCode . fromString . ("--" <>)
