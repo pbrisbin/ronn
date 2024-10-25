@@ -20,28 +20,51 @@ spec = do
     specify "a complete example" $ do
       let
         opts =
-          [ Opt
-              { shorts = ['h']
-              , longs = ["help"]
-              , argument = Nothing
-              , default_ = Just ""
-              , help = Just "Display this help"
-              }
-          , Opt
-              { shorts = ['o']
-              , longs = ["output"]
-              , argument = Just "FILE"
-              , default_ = Just "-"
-              , help = Just $ RonnLine ["Output to", RonnVariable "FILE"]
-              }
-          , Opt
-              { shorts = []
-              , longs = []
-              , argument = Just "INPUT"
-              , default_ = Nothing
-              , help = Just "Source input"
-              }
-          ]
+          OptsMany
+            [ OptsOne $
+                Opt
+                  { shorts = ['h']
+                  , longs = ["help"]
+                  , argument = Nothing
+                  , default_ = Just ""
+                  , help = Just "Display this help"
+                  }
+            , OptsOr $
+                OptsMany
+                  [ OptsOne $
+                      Opt
+                        { shorts = []
+                        , longs = ["debug"]
+                        , argument = Nothing
+                        , default_ = Nothing
+                        , help = Just "Enable debug"
+                        }
+                  , OptsOne $
+                      Opt
+                        { shorts = []
+                        , longs = ["trace"]
+                        , argument = Nothing
+                        , default_ = Nothing
+                        , help = Just "Enable trace"
+                        }
+                  ]
+            , OptsOne $
+                Opt
+                  { shorts = ['o']
+                  , longs = ["output"]
+                  , argument = Just "FILE"
+                  , default_ = Just "-"
+                  , help = Just $ RonnLine ["Output to", RonnVariable "FILE"]
+                  }
+            , OptsOne $
+                Opt
+                  { shorts = []
+                  , longs = []
+                  , argument = Just "INPUT"
+                  , default_ = Nothing
+                  , help = Just "Source input"
+                  }
+            ]
 
         ronn =
           Ronn
@@ -123,7 +146,7 @@ spec = do
           , ""
           , "## SYNOPSIS"
           , ""
-          , "`ronn` [`-h`\\|`--help`] [`-o`\\|`--output`=<FILE>] <INPUT>"
+          , "`ronn` [`-h`] [`--help`] [`--debug` \\| `--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>"
           , ""
           , "## DESCRIPTION"
           , ""
@@ -134,7 +157,13 @@ spec = do
           , "  * `-h`, `--help`:"
           , "    Display this help"
           , ""
-          , "  * `-o`, `--output`=<FILE>:"
+          , "  * `--debug`:"
+          , "    Enable debug"
+          , ""
+          , "  * `--trace`:"
+          , "    Enable trace"
+          , ""
+          , "  * `-o` <FILE>, `--output`=<FILE>:"
           , "    Output to <FILE>"
           , ""
           , "  * <INPUT>:"

@@ -26,7 +26,7 @@ envToDefinition :: Env -> RonnDefinition
 envToDefinition env =
   RonnDefinition
     { name =
-        addArgument env $
+        addArgument "=" env $
           RonnConcat $
             intersperse "|" $
               map (RonnCode . fromString) env.vars
