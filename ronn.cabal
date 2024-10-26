@@ -12,7 +12,7 @@ category:       Documentation
 homepage:       https://github.com/pbrisbin/ronn#readme
 bug-reports:    https://github.com/pbrisbin/ronn/issues
 maintainer:     Pat Brisbin
-license-file:   LICENSE
+license:        AGPL-3
 build-type:     Simple
 extra-doc-files:
     README.md
