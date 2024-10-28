@@ -159,7 +159,7 @@ ronnGolden ronn =
     , encodePretty = unpack
     , writeToFile = T.writeFile
     , readFromFile = T.readFile
-    , goldenFile = "doc" </> ronnFilePath ronn
+    , goldenFile = "../doc" </> ronnFilePath ronn
     , actualFile = Nothing
     , failFirstTime = False
     }

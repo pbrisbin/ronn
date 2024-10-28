@@ -1,3 +1,18 @@
 resolver: lts-22.39
+
 packages:
   - ronn
+  - ronn-opt-env-conf
+
+extra-deps:
+  - opt-env-conf-0.6.0.2
+
+  # For opt-env-conf
+  - autodocodec-0.4.2.2
+  - autodocodec-nix-0.0.1.4
+  - safe-coloured-text-0.3.0.2
+  - safe-coloured-text-layout-0.2.0.1
+
+  # Versions in resolver are broken by missing NumberBounds
+  - autodocodec-schema-0.2.0.0
+  - autodocodec-yaml-0.4.0.0
