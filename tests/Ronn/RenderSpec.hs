@@ -21,30 +21,30 @@ spec = do
               { name = ManRef "ronn" $ ManSection 1
               , description = ["example ronn man-page"]
               , sections =
-                  [ RonnSection
+                  [ Section
                       { name = "SYNOPSIS"
                       , content =
-                          [ RonnGroups
-                              [ RonnLines
-                                  [ RonnLine
-                                      [ RonnCode "ronn"
-                                      , RonnBrackets $ RonnCode "-h"
-                                      , RonnBrackets $ RonnCode "--help"
-                                      , RonnBrackets $ mconcat [RonnCode "--debug", "|", RonnCode "--trace"]
-                                      , RonnBrackets $ mconcat [RonnCode "-o", " ", RonnVariable "FILE"]
-                                      , RonnBrackets $ mconcat [RonnCode "--output", "=", RonnVariable "FILE"]
-                                      , RonnVariable "INPUT"
+                          [ Groups
+                              [ Lines
+                                  [ Line
+                                      [ Code "ronn"
+                                      , Brackets $ Code "-h"
+                                      , Brackets $ Code "--help"
+                                      , Brackets $ mconcat [Code "--debug", "|", Code "--trace"]
+                                      , Brackets $ mconcat [Code "-o", " ", Variable "FILE"]
+                                      , Brackets $ mconcat [Code "--output", "=", Variable "FILE"]
+                                      , Variable "INPUT"
                                       ]
                                   ]
                               ]
                           ]
                       }
-                  , RonnSection
+                  , Section
                       { name = "DESCRIPTION"
                       , content =
-                          [ RonnGroups
-                              [ RonnLines
-                                  [ RonnLine -- test unwords-like behavior
+                          [ Groups
+                              [ Lines
+                                  [ Line -- test unwords-like behavior
                                       [ "This is an"
                                       , "example man-page to show"
                                       , "how rendering the AST looks."
@@ -53,67 +53,67 @@ spec = do
                               ]
                           ]
                       }
-                  , RonnSection
+                  , Section
                       { name = "OPTIONS"
                       , content =
-                          [ RonnDefinitions
-                              [ RonnDefinition
+                          [ Definitions
+                              [ Definition
                                   { name =
                                       mconcat
-                                        [ RonnCode "-h"
+                                        [ Code "-h"
                                         , ", "
-                                        , RonnCode "--help"
+                                        , Code "--help"
                                         ]
                                   , description = "Display this help"
                                   , content = Nothing
                                   }
-                              , RonnDefinition
-                                  { name = RonnCode "--debug"
+                              , Definition
+                                  { name = Code "--debug"
                                   , description = "Enable debug"
                                   , content = Nothing
                                   }
-                              , RonnDefinition
-                                  { name = RonnCode "--trace"
+                              , Definition
+                                  { name = Code "--trace"
                                   , description = "Enable trace"
                                   , content = Nothing
                                   }
-                              , RonnDefinition
+                              , Definition
                                   { name =
                                       mconcat
-                                        [ RonnCode "-o"
+                                        [ Code "-o"
                                         , ", "
-                                        , RonnCode "--output"
+                                        , Code "--output"
                                         , "="
-                                        , RonnVariable "FILE"
+                                        , Variable "FILE"
                                         ]
-                                  , description = RonnLine ["Output to", RonnVariable "FILE"]
+                                  , description = Line ["Output to", Variable "FILE"]
                                   , content = Nothing
                                   }
-                              , RonnDefinition
-                                  { name = RonnVariable "INPUT"
+                              , Definition
+                                  { name = Variable "INPUT"
                                   , description = "Source input"
                                   , content = Nothing
                                   }
                               ]
                           ]
                       }
-                  , RonnSection
+                  , Section
                       { name = "ENVIRONMENT"
                       , content =
-                          [ RonnDefinitions
-                              [ RonnDefinition
-                                  { name = RonnCode "HOME"
+                          [ Definitions
+                              [ Definition
+                                  { name = Code "HOME"
                                   , description = "User's HOME directory"
                                   , content =
                                       Just
                                         [ "Some further details:"
-                                        , RonnDefinitions
-                                            [ RonnDefinition
+                                        , Definitions
+                                            [ Definition
                                                 { name = "foo"
                                                 , description = "The foo"
                                                 , content = Nothing
                                                 }
-                                            , RonnDefinition
+                                            , Definition
                                                 { name = "bar"
                                                 , description = "The bar"
                                                 , content = Nothing
@@ -124,17 +124,17 @@ spec = do
                               ]
                           ]
                       }
-                  , RonnSection
+                  , Section
                       { name = "SEE ALSO"
                       , content =
-                          [ RonnGroups
-                              [ RonnLines
-                                  [ RonnLine
+                          [ Groups
+                              [ Lines
+                                  [ Line
                                       [ mconcat $
                                           intersperse
-                                            (RonnRaw ", ")
-                                            [ RonnRef $ ManRef "markdown" $ ManSection 7
-                                            , RonnRef $ ManRef "roff" $ ManSection 7
+                                            (Raw ", ")
+                                            [ Ref $ ManRef "markdown" $ ManSection 7
+                                            , Ref $ ManRef "roff" $ ManSection 7
                                             ]
                                       ]
                                   ]

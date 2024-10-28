@@ -8,12 +8,12 @@
 -- Portability : POSIX
 module Ronn.AST
   ( Ronn (..)
-  , RonnSection (..)
-  , RonnContent (..)
-  , RonnDefinition (..)
-  , RonnGroup (..)
-  , RonnLine (..)
-  , RonnPart (..)
+  , Section (..)
+  , Content (..)
+  , Definition (..)
+  , Group (..)
+  , Line (..)
+  , Part (..)
 
     -- * References
   , ManRef (..)
@@ -28,78 +28,78 @@ import Data.Text (Text, pack)
 
 data Ronn = Ronn
   { name :: ManRef
-  , description :: [RonnPart]
-  , sections :: [RonnSection]
+  , description :: [Part]
+  , sections :: [Section]
   }
 
-data RonnSection = RonnSection
+data Section = Section
   { name :: Text
-  , content :: [RonnContent]
+  , content :: [Content]
   }
 
-data RonnContent
-  = RonnDefinitions [RonnDefinition]
-  | RonnGroups [RonnGroup]
+data Content
+  = Definitions [Definition]
+  | Groups [Group]
 
-instance IsString RonnContent where
-  fromString = RonnGroups . pure . fromString
+instance IsString Content where
+  fromString = Groups . pure . fromString
 
-data RonnDefinition = RonnDefinition
-  { name :: RonnPart
-  , description :: RonnLine
+data Definition = Definition
+  { name :: Part
+  , description :: Line
   -- ^ A line of nested description is required
-  , content :: Maybe [RonnContent]
+  , content :: Maybe [Content]
   -- ^ More content can be optionally nested
   }
 
-data RonnGroup
-  = RonnTitle ManRef [RonnPart]
-  | RonnHeader Text
-  | RonnLines [RonnLine]
+data Group
+  = Title ManRef [Part]
+  | Header Text
+  | Lines [Line]
 
-instance IsString RonnGroup where
-  fromString = RonnLines . pure . fromString
+instance IsString Group where
+  fromString = Lines . pure . fromString
 
-newtype RonnLine = RonnLine
-  { unwrap :: [RonnPart]
+newtype Line = Line
+  { unwrap :: [Part]
   }
 
-instance IsString RonnLine where
-  fromString = RonnLine . pure . fromString
+instance IsString Line where
+  fromString = Line . pure . fromString
 
-data RonnPart
-  = -- | 'RonnConcat' joins 'RonnPart's without automaticaly inserting a space
+data Part
+  = -- | 'Concat' joins 'Part's without automaticaly inserting a space
     --
     -- The following expressions are equivalent:
     --
-    -- - @'ronnLineToText' $ 'RonnLine' [p1, p2]@
-    -- - @'ronnLineToText' $ 'RonnLine' ['RonnConcat' [p1, " ", p2]]@
-    -- - @'ronnLineToText' $ 'RonnLine' [p1 <> " " <> p2]@
+    -- - @'ronnLineToText' $ 'Line' [p1, p2]@
+    -- - @'ronnLineToText' $ 'Line' ['Concat' [p1, " ", p2]]@
+    -- - @'ronnLineToText' $ 'Line' [p1 <> " " <> p2]@
     --
     -- Using the 'Semigroup' instance should be preferred, in case the AST
     -- changes in the future.
-    RonnConcat [RonnPart]
-  | RonnCode RonnPart
-  | RonnUserInput RonnPart
-  | RonnStrong RonnPart
-  | RonnVariable RonnPart
-  | RonnEphasis RonnPart
-  | RonnBrackets RonnPart
-  | RonnParens RonnPart
-  | RonnRef ManRef
-  | RonnRaw Text
+    Concat [Part]
+  | Code Part
+  | UserInput Part
+  | Strong Part
+  | Variable Part
+  | Ephasis Part
+  | Brackets Part
+  | Parens Part
+  | Ref ManRef
+  | Raw Text
 
-instance IsString RonnPart where
-  fromString = RonnRaw . pack
+instance IsString Part where
+  fromString = Raw . pack
 
-instance Semigroup RonnPart where
-  RonnConcat as <> RonnConcat bs = RonnConcat $ as <> bs
-  RonnConcat as <> b = RonnConcat $ as <> [b]
-  a <> RonnConcat bs = RonnConcat $ a : bs
-  a <> b = RonnConcat [a, b]
+instance Semigroup Part where
+  Concat as <> Concat bs = Concat $ as <> bs
+  Concat as <> b = Concat $ as <> [b]
+  a <> Concat bs = Concat $ a : bs
+  a <> b = Concat [a, b]
 
-instance Monoid RonnPart where
-  mempty = RonnConcat []
+instance Monoid Part where
+  mempty = Concat []
 
 data ManRef = ManRef
   { name :: Text

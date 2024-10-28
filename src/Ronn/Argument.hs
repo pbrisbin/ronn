@@ -21,7 +21,7 @@ import Ronn.AST
 class HasArgument a where
   getArgument :: a -> Maybe String
 
-addArgument :: HasArgument a => Text -> a -> RonnPart -> RonnPart
+addArgument :: HasArgument a => Text -> a -> Part -> Part
 addArgument sep a p = case getArgument a of
   Nothing -> p
-  Just arg -> mconcat [p, RonnRaw sep, RonnVariable $ fromString arg]
+  Just arg -> mconcat [p, Raw sep, Variable $ fromString arg]
