@@ -1,11 +1,6 @@
 ## Ronn
 
-[![Hackage](https://img.shields.io/hackage/v/ronn.svg?style=flat)](https://hackage.haskell.org/package/ronn)
-[![Stackage Nightly](http://stackage.org/package/ronn/badge/nightly)](http://stackage.org/nightly/package/ronn)
-[![Stackage LTS](http://stackage.org/package/ronn/badge/lts)](http://stackage.org/lts/package/ronn)
-[![CI](https://github.com/pbrisbin/ronn/actions/workflows/ci.yml/badge.svg)](https://github.com/pbrisbin/ronn/actions/workflows/ci.yml)
-
-Describe and render Ronn documentation.
+Generate and render Ronn documentation.
 
 ## Why Ronn?
 
@@ -20,30 +15,24 @@ from a single source, but Ronn produces *by far* the highest-quality outputs
 from the simplest source. Tools like `man2html` or even Pandoc often produce
 sub-standard output in certain cases, or lack features such as cross-references.
 
-This package contains the `Ronn` AST type and a rendering function. Companion
-packages are planned to automatically convert any `optparse-applicative`,
-`envparse`, or `opt-env-conf` `Parser` type into a `Ronn` value. This will allow
-any application using one of these libraries to maintain high-quality man-pages
-automatically.
+## Packages
 
-## Usage
+- [`ronn`](./ronn): document types and rendering function
+- [`ronn-opt-env-conf`](./ronn-opt-env-conf): `OptEnvConf.Parser -> Ronn`
+- [`ronn-optparse-applicative`](./ronn-optparse-applicative): `Options.Applicative.Parser -> Ronn`
+- [`ronn-envparse`](./ronn-envparse): `Env.Parser -> Ronn`
 
-For an example of building an AST by hand, and what the rendered `Text` looks
-like, see the [test suite](./tests/Ronn/RenderSpec.hs)
+## Examples
 
-Rendering this AST produces [this](./doc/ronn.1.ronn).
-
-From here, you can use the [`ronn-ng`][ronn-ng] gem produce a high-quality
-man-page and HTML:
+For example Ronn produced by these packages, [see here](./doc/ronn.1.ronn). You
+can use the [`ronn-ng`][ronn-ng] gem produce a high-quality man-page and HTML
+from this source:
 
 ```console
-% ronn --style toc --roff --html path/*.ronn
+% ronn --style toc --roff --html doc/*.ronn
 ```
 
-You can view the HTML produced by this process [here](#TODO).
+You can view the HTML produced by this process [here][example-html].
 
 [ronn-ng]: https://github.com/apjanke/ronn-ng
-
----
-
-[LICENSE](./LICENSE) | [CHANGELOG](./CHANGELOG.md)
+[example-html]: #TODO
