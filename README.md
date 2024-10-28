@@ -31,7 +31,7 @@ automatically.
 For an example of building an AST by hand, and what the rendered `Text` looks
 like, see the [test suite](./tests/Ronn/RenderSpec.hs)
 
-Rendering this AST produces [this](./doc/ronn.ronn).
+Rendering this AST produces [this](./doc/ronn.1.ronn).
 
 From here, you can use the [`ronn-ng`][ronn-ng] gem produce a high-quality
 man-page and HTML:

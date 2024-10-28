@@ -7,9 +7,20 @@
 -- Stability   : experimental
 -- Portability : POSIX
 module Ronn
-  ( module X
+  ( module Ronn.AST
+  , module Ronn.Render
+  , ronnFilePath
   )
 where
 
-import Ronn.AST as X
-import Ronn.Render as X
+import Prelude
+
+import Data.Text (unpack)
+import Ronn.AST
+import Ronn.Render
+
+ronnFilePath :: Ronn -> FilePath
+ronnFilePath ronn =
+  unpack ref.name <> "." <> show (manSectionNumber ref.section) <> ".ronn"
+ where
+  ref = ronn.name
