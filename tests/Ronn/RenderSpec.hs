@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -Wno-ambiguous-fields #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Ronn.RenderSpec
   ( spec
@@ -6,8 +6,10 @@ module Ronn.RenderSpec
 
 import Prelude
 
+import Data.FileEmbed
 import Data.List (intersperse)
-import Data.Text qualified as T
+import Data.Text (Text)
+import Data.Text.Encoding (decodeUtf8)
 import Ronn.AST
 import Ronn.Render
 import Test.Hspec
@@ -16,7 +18,13 @@ spec :: Spec
 spec = do
   describe "ronnToText" $ do
     specify "a complete example" $ do
-      let ronn =
+      let
+        expected :: Text
+        expected = decodeUtf8 $(embedFileRelative "tests/golden/ronn.ronn")
+
+        actual :: Text
+        actual =
+          ronnToText $
             Ronn
               { name = ManRef "ronn" $ ManSection 1
               , description = ["example ronn man-page"]
@@ -144,51 +152,4 @@ spec = do
                   ]
               }
 
-      ronnToText ronn
-        `shouldBe` T.unlines
-          [ "ronn(1) -- example ronn man-page"
-          , "================================"
-          , ""
-          , "## SYNOPSIS"
-          , ""
-          , "`ronn` [`-h`] [`--help`] [`--debug`|`--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>"
-          , ""
-          , "## DESCRIPTION"
-          , ""
-          , "This is an example man-page to show how rendering the AST looks."
-          , ""
-          , "## OPTIONS"
-          , ""
-          , "  * `-h`, `--help`:"
-          , "    Display this help"
-          , ""
-          , "  * `--debug`:"
-          , "    Enable debug"
-          , ""
-          , "  * `--trace`:"
-          , "    Enable trace"
-          , ""
-          , "  * `-o`, `--output`=<FILE>:"
-          , "    Output to <FILE>"
-          , ""
-          , "  * <INPUT>:"
-          , "    Source input"
-          , ""
-          , "## ENVIRONMENT"
-          , ""
-          , "  * `HOME`:"
-          , "    User's HOME directory"
-          , ""
-          , "    Some further details:"
-          , ""
-          , "      * foo:"
-          , "        The foo"
-          , ""
-          , "      * bar:"
-          , "        The bar"
-          , ""
-          , "## SEE ALSO"
-          , ""
-          , "**markdown(7)**, **roff(7)**"
-          , ""
-          ]
+      actual `shouldBe` expected
