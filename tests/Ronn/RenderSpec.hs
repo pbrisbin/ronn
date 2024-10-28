@@ -9,8 +9,6 @@ import Prelude
 import Data.List (intersperse)
 import Data.Text qualified as T
 import Ronn.AST
-import Ronn.Env
-import Ronn.Opt
 import Ronn.Render
 import Test.Hspec
 
@@ -18,126 +16,133 @@ spec :: Spec
 spec = do
   describe "ronnToText" $ do
     specify "a complete example" $ do
-      let
-        opts =
-          OptsMany
-            [ OptsOne $
-                Opt
-                  { shorts = ['h']
-                  , longs = ["help"]
-                  , argument = Nothing
-                  , default_ = Just ""
-                  , help = Just "Display this help"
-                  }
-            , OptsOr $
-                OptsMany
-                  [ OptsOne $
-                      Opt
-                        { shorts = []
-                        , longs = ["debug"]
-                        , argument = Nothing
-                        , default_ = Nothing
-                        , help = Just "Enable debug"
-                        }
-                  , OptsOne $
-                      Opt
-                        { shorts = []
-                        , longs = ["trace"]
-                        , argument = Nothing
-                        , default_ = Nothing
-                        , help = Just "Enable trace"
-                        }
-                  ]
-            , OptsOne $
-                Opt
-                  { shorts = ['o']
-                  , longs = ["output"]
-                  , argument = Just "FILE"
-                  , default_ = Just "-"
-                  , help = Just $ RonnLine ["Output to", RonnVariable "FILE"]
-                  }
-            , OptsOne $
-                Opt
-                  { shorts = []
-                  , longs = []
-                  , argument = Just "INPUT"
-                  , default_ = Nothing
-                  , help = Just "Source input"
-                  }
-            ]
-
-        ronn =
-          Ronn
-            { name = ManRef "ronn" $ ManSection 1
-            , description = ["example ronn man-page"]
-            , sections =
-                [ synopsisSection "ronn" opts
-                , RonnSection
-                    { name = "DESCRIPTION"
-                    , content =
-                        [ RonnGroups
-                            [ RonnLines
-                                [ RonnLine -- test unwords-like behavior
-                                    [ "This is an"
-                                    , "example man-page to show"
-                                    , "how rendering the AST looks."
-                                    ]
-                                ]
-                            ]
-                        ]
-                    }
-                , optionsSection opts
-                , RonnSection
-                    { name = "ENVIRONMENT"
-                    , content =
-                        [ RonnDefinitions
-                            [ ( envToDefinition $
-                                  Env
-                                    { vars = ["HOME"]
-                                    , argument = Nothing
-                                    , default_ = Nothing
-                                    , help = Just "User's HOME directory"
-                                    }
-                              )
-                                { content =
-                                    Just
-                                      [ "Some further details:"
-                                      , RonnDefinitions
-                                          [ RonnDefinition
-                                              { name = "foo"
-                                              , description = "The foo"
-                                              , content = Nothing
-                                              }
-                                          , RonnDefinition
-                                              { name = "bar"
-                                              , description = "The bar"
-                                              , content = Nothing
-                                              }
-                                          ]
+      let ronn =
+            Ronn
+              { name = ManRef "ronn" $ ManSection 1
+              , description = ["example ronn man-page"]
+              , sections =
+                  [ RonnSection
+                      { name = "SYNOPSIS"
+                      , content =
+                          [ RonnGroups
+                              [ RonnLines
+                                  [ RonnLine
+                                      [ RonnCode "ronn"
+                                      , RonnBrackets $ RonnCode "-h"
+                                      , RonnBrackets $ RonnCode "--help"
+                                      , RonnBrackets $ mconcat [RonnCode "--debug", "|", RonnCode "--trace"]
+                                      , RonnBrackets $ mconcat [RonnCode "-o", " ", RonnVariable "FILE"]
+                                      , RonnBrackets $ mconcat [RonnCode "--output", "=", RonnVariable "FILE"]
+                                      , RonnVariable "INPUT"
                                       ]
-                                }
-                            ]
-                        ]
-                    }
-                , RonnSection
-                    { name = "SEE ALSO"
-                    , content =
-                        [ RonnGroups
-                            [ RonnLines
-                                [ RonnLine
-                                    [ RonnConcat $
-                                        intersperse
-                                          (RonnRaw ", ")
-                                          [ RonnRef $ ManRef "markdown" $ ManSection 7
-                                          , RonnRef $ ManRef "roff" $ ManSection 7
-                                          ]
-                                    ]
-                                ]
-                            ]
-                        ]
-                    }
-                ]
-            }
+                                  ]
+                              ]
+                          ]
+                      }
+                  , RonnSection
+                      { name = "DESCRIPTION"
+                      , content =
+                          [ RonnGroups
+                              [ RonnLines
+                                  [ RonnLine -- test unwords-like behavior
+                                      [ "This is an"
+                                      , "example man-page to show"
+                                      , "how rendering the AST looks."
+                                      ]
+                                  ]
+                              ]
+                          ]
+                      }
+                  , RonnSection
+                      { name = "OPTIONS"
+                      , content =
+                          [ RonnDefinitions
+                              [ RonnDefinition
+                                  { name =
+                                      mconcat
+                                        [ RonnCode "-h"
+                                        , ", "
+                                        , RonnCode "--help"
+                                        ]
+                                  , description = "Display this help"
+                                  , content = Nothing
+                                  }
+                              , RonnDefinition
+                                  { name = RonnCode "--debug"
+                                  , description = "Enable debug"
+                                  , content = Nothing
+                                  }
+                              , RonnDefinition
+                                  { name = RonnCode "--trace"
+                                  , description = "Enable trace"
+                                  , content = Nothing
+                                  }
+                              , RonnDefinition
+                                  { name =
+                                      mconcat
+                                        [ RonnCode "-o"
+                                        , ", "
+                                        , RonnCode "--output"
+                                        , "="
+                                        , RonnVariable "FILE"
+                                        ]
+                                  , description = RonnLine ["Output to", RonnVariable "FILE"]
+                                  , content = Nothing
+                                  }
+                              , RonnDefinition
+                                  { name = RonnVariable "INPUT"
+                                  , description = "Source input"
+                                  , content = Nothing
+                                  }
+                              ]
+                          ]
+                      }
+                  , RonnSection
+                      { name = "ENVIRONMENT"
+                      , content =
+                          [ RonnDefinitions
+                              [ RonnDefinition
+                                  { name = RonnCode "HOME"
+                                  , description = "User's HOME directory"
+                                  , content =
+                                      Just
+                                        [ "Some further details:"
+                                        , RonnDefinitions
+                                            [ RonnDefinition
+                                                { name = "foo"
+                                                , description = "The foo"
+                                                , content = Nothing
+                                                }
+                                            , RonnDefinition
+                                                { name = "bar"
+                                                , description = "The bar"
+                                                , content = Nothing
+                                                }
+                                            ]
+                                        ]
+                                  }
+                              ]
+                          ]
+                      }
+                  , RonnSection
+                      { name = "SEE ALSO"
+                      , content =
+                          [ RonnGroups
+                              [ RonnLines
+                                  [ RonnLine
+                                      [ mconcat $
+                                          intersperse
+                                            (RonnRaw ", ")
+                                            [ RonnRef $ ManRef "markdown" $ ManSection 7
+                                            , RonnRef $ ManRef "roff" $ ManSection 7
+                                            ]
+                                      ]
+                                  ]
+                              ]
+                          ]
+                      }
+                  ]
+              }
 
       ronnToText ronn
         `shouldBe` T.unlines
@@ -146,7 +151,7 @@ spec = do
           , ""
           , "## SYNOPSIS"
           , ""
-          , "`ronn` [`-h`] [`--help`] [`--debug` \\| `--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>"
+          , "`ronn` [`-h`] [`--help`] [`--debug`|`--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>"
           , ""
           , "## DESCRIPTION"
           , ""
@@ -163,7 +168,7 @@ spec = do
           , "  * `--trace`:"
           , "    Enable trace"
           , ""
-          , "  * `-o` <FILE>, `--output`=<FILE>:"
+          , "  * `-o`, `--output`=<FILE>:"
           , "    Output to <FILE>"
           , ""
           , "  * <INPUT>:"

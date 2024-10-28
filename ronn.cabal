@@ -27,8 +27,6 @@ library
       Ronn
       Ronn.Argument
       Ronn.AST
-      Ronn.Env
-      Ronn.Opt
       Ronn.Render
   other-modules:
       Paths_ronn
