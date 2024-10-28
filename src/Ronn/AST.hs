@@ -25,6 +25,7 @@ import Prelude
 
 import Data.String (IsString (..))
 import Data.Text (Text, pack)
+import Ronn.ManRef
 
 data Ronn = Ronn
   { name :: ManRef
@@ -100,14 +101,3 @@ instance Semigroup Part where
 
 instance Monoid Part where
   mempty = Concat []
-
-data ManRef = ManRef
-  { name :: Text
-  , section :: ManSection
-  }
-
--- TODO: enum?
-newtype ManSection = ManSection Int
-
-manSectionNumber :: ManSection -> Int
-manSectionNumber (ManSection n) = n
