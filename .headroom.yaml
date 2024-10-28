@@ -22,9 +22,8 @@ run-mode: add
 ## same as '-s|--source-path=PATH' command line argument (can be used multiple
 ## times for more than one path).
 source-paths:
-  - app
-  - src
-  - test
+  - ronn/src
+  - ronn/tests
 
 ## If set to 'true', Headroom tries to detect whether any VCS (like GIT) is used
 ## for current project and if yes, it loads rules for ignored files and excludes
