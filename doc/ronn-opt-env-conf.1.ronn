@@ -1,0 +1,29 @@
+ronn-opt-env-conf(1) -- example Ronn from opt-env-conf
+======================================================
+
+## SYNOPSIS
+
+`ronn-opt-env-conf` [`--debug`] [`-o`\|`--output`=<FILE>] <FILE>
+
+## OPTIONS
+
+  * `--debug`:
+    Enable debug
+
+  * `-o`, `--output`=<FILE>:
+    Output file (default "-")
+
+  * `FILE`:
+    Input file
+
+## ENVIRONMENT
+
+  * `DEBUG`|`VERBOSE`:
+    Enable debug
+
+  * `OUTPUT`=<FILE>:
+    Output file
+
+  * `INPUT`=<FILE>:
+    Input file
+

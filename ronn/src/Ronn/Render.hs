@@ -8,6 +8,11 @@
 -- Portability : POSIX
 module Ronn.Render
   ( ronnToText
+
+    -- * Rendering sub-parts, mostly useful in tests
+  , ronnGroupToText
+  , ronnLineToText
+  , ronnPartToText
   ) where
 
 import Prelude

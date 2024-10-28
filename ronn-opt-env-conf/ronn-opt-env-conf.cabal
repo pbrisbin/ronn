@@ -1,0 +1,94 @@
+cabal-version: 1.18
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           ronn-opt-env-conf
+version:        1.0.0.0
+synopsis:       Produce Ronn from OptEnvConf
+description:    Please see README.md
+category:       Documentation
+homepage:       https://github.com/pbrisbin/ronn#readme
+bug-reports:    https://github.com/pbrisbin/ronn/issues
+maintainer:     Pat Brisbin
+license:        AGPL-3
+build-type:     Simple
+extra-doc-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/pbrisbin/ronn
+
+library
+  exposed-modules:
+      Ronn.OptEnvConf
+      Ronn.OptEnvConf.Env
+      Ronn.OptEnvConf.Opt
+  other-modules:
+      Paths_ronn_opt_env_conf
+  hs-source-dirs:
+      src
+  default-extensions:
+      DataKinds
+      DeriveAnyClass
+      DerivingStrategies
+      DerivingVia
+      DuplicateRecordFields
+      GADTs
+      LambdaCase
+      NoFieldSelectors
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedRecordDot
+      OverloadedStrings
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-monomorphism-restriction -Wno-prepositive-qualified-module -Wno-safe -Wno-unsafe
+  build-depends:
+      base <5
+    , opt-env-conf
+    , ronn
+    , text
+  default-language: GHC2021
+  if impl(ghc >= 9.8)
+    ghc-options: -Wno-missing-role-annotations -Wno-missing-poly-kind-signatures
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Main.hs
+  other-modules:
+      Ronn.OptEnvConfSpec
+      Paths_ronn_opt_env_conf
+  hs-source-dirs:
+      tests
+  default-extensions:
+      DataKinds
+      DeriveAnyClass
+      DerivingStrategies
+      DerivingVia
+      DuplicateRecordFields
+      GADTs
+      LambdaCase
+      NoFieldSelectors
+      NoImplicitPrelude
+      NoMonomorphismRestriction
+      OverloadedRecordDot
+      OverloadedStrings
+      RecordWildCards
+      TypeFamilies
+  ghc-options: -fignore-optim-changes -fwrite-ide-info -Weverything -Wno-all-missed-specialisations -Wno-missing-exported-signatures -Wno-missing-import-lists -Wno-missing-kind-signatures -Wno-missing-local-signatures -Wno-missing-safe-haskell-mode -Wno-monomorphism-restriction -Wno-prepositive-qualified-module -Wno-safe -Wno-unsafe -threaded -rtsopts "-with-rtsopts=-N"
+  build-depends:
+      base <5
+    , filepath
+    , hspec
+    , hspec-golden
+    , opt-env-conf
+    , ronn
+    , ronn-opt-env-conf
+    , text
+  default-language: GHC2021
+  if impl(ghc >= 9.8)
+    ghc-options: -Wno-missing-role-annotations -Wno-missing-poly-kind-signatures
