@@ -20,23 +20,23 @@ ronnToText :: Ronn -> Text
 ronnToText ronn =
   T.unlines $
     map ronnGroupToText $
-      RonnTitle ronn.name ronn.description
+      Title ronn.name ronn.description
         : concatMap ronnSectionToGroups ronn.sections
 
-ronnSectionToGroups :: RonnSection -> [RonnGroup]
+ronnSectionToGroups :: Section -> [Group]
 ronnSectionToGroups section =
-  RonnHeader section.name : concatMap (ronnContentToGroups 0) section.content
+  Header section.name : concatMap (ronnContentToGroups 0) section.content
 
-ronnContentToGroups :: Int -> RonnContent -> [RonnGroup]
+ronnContentToGroups :: Int -> Content -> [Group]
 ronnContentToGroups indentLevel = \case
-  RonnDefinitions defns ->
+  Definitions defns ->
     concatMap (ronnDefinitionToGroups $ indentLevel + 2) defns
-  RonnGroups gs -> map (indentRonnGroup indentLevel) gs
+  Groups gs -> map (indentRonnGroup indentLevel) gs
 
-ronnDefinitionToGroups :: Int -> RonnDefinition -> [RonnGroup]
+ronnDefinitionToGroups :: Int -> Definition -> [Group]
 ronnDefinitionToGroups indentLevel defn =
-  [ RonnLines
-      [ indentRonnLine indentLevel $ RonnLine ["* " <> defn.name <> ":"]
+  [ Lines
+      [ indentRonnLine indentLevel $ Line ["* " <> defn.name <> ":"]
       , indentRonnLine nextIndentLevel defn.description
       ]
   ]
@@ -45,38 +45,38 @@ ronnDefinitionToGroups indentLevel defn =
   nested = maybe [] (concatMap $ ronnContentToGroups nextIndentLevel) defn.content
   nextIndentLevel = indentLevel + 2
 
-ronnGroupToText :: RonnGroup -> Text
+ronnGroupToText :: Group -> Text
 ronnGroupToText = T.unlines . map ronnLineToText . ronnGroupToLines
 
-ronnGroupToLines :: RonnGroup -> [RonnLine]
+ronnGroupToLines :: Group -> [Line]
 ronnGroupToLines = \case
-  RonnTitle ref description ->
+  Title ref description ->
     let nameLine = ronnNameLine ref description
     in  [ nameLine
-        , RonnLine [RonnRaw $ T.replicate (ronnLineLength nameLine) "="]
+        , Line [Raw $ T.replicate (ronnLineLength nameLine) "="]
         ]
-  RonnHeader name -> [RonnLine ["##", RonnRaw name]]
-  RonnLines ls -> ls
+  Header name -> [Line ["##", Raw name]]
+  Lines ls -> ls
 
-ronnNameLine :: ManRef -> [RonnPart] -> RonnLine
+ronnNameLine :: ManRef -> [Part] -> Line
 ronnNameLine ref =
-  RonnLine . (RonnRaw (manRefToText ref) :) . ("--" :)
+  Line . (Raw (manRefToText ref) :) . ("--" :)
 
-ronnLineToText :: RonnLine -> Text
+ronnLineToText :: Line -> Text
 ronnLineToText = T.unwords . map ronnPartToText . (.unwrap)
 
-ronnPartToText :: RonnPart -> Text
+ronnPartToText :: Part -> Text
 ronnPartToText = \case
-  RonnConcat xs -> mconcat $ map ronnPartToText xs
-  RonnCode x -> "`" <> ronnPartToText x <> "`"
-  RonnUserInput x -> "`" <> ronnPartToText x <> "`"
-  RonnStrong x -> "**" <> ronnPartToText x <> "**"
-  RonnVariable x -> "<" <> ronnPartToText x <> ">"
-  RonnEphasis x -> "_" <> ronnPartToText x <> "_"
-  RonnBrackets x -> "[" <> ronnPartToText x <> "]"
-  RonnParens x -> "(" <> ronnPartToText x <> ")"
-  RonnRef ref -> ronnPartToText $ RonnStrong $ RonnRaw $ manRefToText ref
-  RonnRaw x -> x
+  Concat xs -> mconcat $ map ronnPartToText xs
+  Code x -> "`" <> ronnPartToText x <> "`"
+  UserInput x -> "`" <> ronnPartToText x <> "`"
+  Strong x -> "**" <> ronnPartToText x <> "**"
+  Variable x -> "<" <> ronnPartToText x <> ">"
+  Ephasis x -> "_" <> ronnPartToText x <> "_"
+  Brackets x -> "[" <> ronnPartToText x <> "]"
+  Parens x -> "(" <> ronnPartToText x <> ")"
+  Ref ref -> ronnPartToText $ Strong $ Raw $ manRefToText ref
+  Raw x -> x
 
 manRefToText :: ManRef -> Text
 manRefToText ref =
@@ -85,19 +85,19 @@ manRefToText ref =
     <> pack (show $ manSectionNumber ref.section)
     <> ")"
 
-ronnLineLength :: RonnLine -> Int
+ronnLineLength :: Line -> Int
 ronnLineLength = T.length . ronnLineToText
 
-indentRonnGroup :: Int -> RonnGroup -> RonnGroup
+indentRonnGroup :: Int -> Group -> Group
 indentRonnGroup indentLevel = \case
-  g@RonnTitle {} -> g
-  g@RonnHeader {} -> g
-  RonnLines ls -> RonnLines $ map (indentRonnLine indentLevel) ls
+  g@Title {} -> g
+  g@Header {} -> g
+  Lines ls -> Lines $ map (indentRonnLine indentLevel) ls
 
--- | Prepends the given number of spaces to the first 'RonnPart' of the line
-indentRonnLine :: Int -> RonnLine -> RonnLine
+-- | Prepends the given number of spaces to the first 'Part' of the line
+indentRonnLine :: Int -> Line -> Line
 indentRonnLine n = \case
-  RonnLine [] -> RonnLine []
-  RonnLine (p : ps) -> RonnLine $ (spaces <> p) : ps
+  Line [] -> Line []
+  Line (p : ps) -> Line $ (spaces <> p) : ps
  where
-  spaces = RonnRaw $ pack $ replicate n ' '
+  spaces = Raw $ pack $ replicate n ' '
