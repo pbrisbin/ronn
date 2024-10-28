@@ -1,0 +1,45 @@
+ronn(1) -- example ronn man-page
+================================
+
+## SYNOPSIS
+
+`ronn` [`-h`] [`--help`] [`--debug`|`--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>
+
+## DESCRIPTION
+
+This is an example man-page to show how rendering the AST looks.
+
+## OPTIONS
+
+  * `-h`, `--help`:
+    Display this help
+
+  * `--debug`:
+    Enable debug
+
+  * `--trace`:
+    Enable trace
+
+  * `-o`, `--output`=<FILE>:
+    Output to <FILE>
+
+  * <INPUT>:
+    Source input
+
+## ENVIRONMENT
+
+  * `HOME`:
+    User's HOME directory
+
+    Some further details:
+
+      * foo:
+        The foo
+
+      * bar:
+        The bar
+
+## SEE ALSO
+
+**markdown(7)**, **roff(7)**
+
