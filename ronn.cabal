@@ -27,6 +27,7 @@ library
       Ronn
       Ronn.Argument
       Ronn.AST
+      Ronn.ManRef
       Ronn.Render
   other-modules:
       Paths_ronn
