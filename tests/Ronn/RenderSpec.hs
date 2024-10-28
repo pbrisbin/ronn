@@ -18,7 +18,7 @@ spec = do
     specify "a complete example" $
       ronnGolden $
         Ronn
-          { name = ManRef "ronn" $ ManSection 1
+          { name = ManRef "ronn" ManSection1
           , description = ["example ronn man-page"]
           , sections =
               [ Section
@@ -133,8 +133,8 @@ spec = do
                                   [ mconcat $
                                       intersperse
                                         (Raw ", ")
-                                        [ Ref $ ManRef "markdown" $ ManSection 7
-                                        , Ref $ ManRef "roff" $ ManSection 7
+                                        [ Ref $ ManRef "markdown" ManSection7
+                                        , Ref $ ManRef "roff" ManSection7
                                         ]
                                   ]
                               ]
