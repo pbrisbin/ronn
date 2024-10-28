@@ -20,7 +20,7 @@ spec = do
     specify "a complete example" $ do
       let
         expected :: Text
-        expected = decodeUtf8 $(embedFileRelative "tests/golden/ronn.ronn")
+        expected = decodeUtf8 $(embedFileRelative "doc/ronn.ronn")
 
         actual :: Text
         actual =
