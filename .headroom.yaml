@@ -24,6 +24,8 @@ run-mode: add
 source-paths:
   - ronn/src
   - ronn/tests
+  - ronn-envparse/src
+  - ronn-envparse/tests
   - ronn-opt-env-conf/src
   - ronn-opt-env-conf/tests
 

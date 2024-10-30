@@ -2,6 +2,7 @@ resolver: lts-22.39
 
 packages:
   - ronn
+  - ronn-envparse
   - ronn-opt-env-conf
 
 extra-deps:
