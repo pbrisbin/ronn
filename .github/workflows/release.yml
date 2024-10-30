@@ -7,15 +7,24 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          - ronn
+          - ronn-envparse
+          - ronn-opt-env-conf
 
     steps:
       - uses: actions/checkout@v4
 
       - id: tag
         uses: freckle/haskell-tag-action@v1
+        with:
+          package-yaml: ${{ matrix.package }}/package.yaml
+          tag-prefix: ${{ matrix.package }}-v
 
       - if: steps.tag.outputs.tag
-        run: stack upload --pvp-bounds lower .
+        run: stack upload --pvp-bounds lower ${{matrix.package}}
         env:
           HACKAGE_KEY: ${{ secrets.HACKAGE_API_KEY }}
           STACK_YAML: stack-lts20.yaml
