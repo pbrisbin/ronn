@@ -1,5 +1,7 @@
 ## Ronn
 
+[![CI](https://github.com/pbrisbin/ronn/actions/workflows/ci.yml/badge.svg)](https://github.com/pbrisbin/ronn/actions/workflows/ci.yml)
+
 Generate and render Ronn documentation.
 
 ## Why Ronn?
@@ -18,9 +20,9 @@ sub-standard output in certain cases, or lack features such as cross-references.
 ## Packages
 
 - [`ronn`](./ronn): document types and rendering function
+- [`ronn-envparse`](./ronn-envparse): `Env.Parser -> Ronn`
 - [`ronn-opt-env-conf`](./ronn-opt-env-conf): `OptEnvConf.Parser -> Ronn`
 - [`ronn-optparse-applicative`](./ronn-optparse-applicative): `Options.Applicative.Parser -> Ronn`
-- [`ronn-envparse`](./ronn-envparse): `Env.Parser -> Ronn`
 
 ## Examples
 
