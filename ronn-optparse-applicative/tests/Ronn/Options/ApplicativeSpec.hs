@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-orphans #-}
-
 -- |
 --
 -- Module      : Ronn.Options.ApplicativeSpec
@@ -15,17 +13,9 @@ module Ronn.Options.ApplicativeSpec
 import Prelude
 
 import Options.Applicative
-import Ronn.Options.Applicative
+import Ronn.Options.Applicative ()
 import Ronn.Test
 import Test.Hspec
-
-instance HasSynopsis Parser where
-  getSynopsis = Just . optSynopsis
-
-instance HasOptDefinitions Parser where
-  getOptDefinitions = Just . optDefinitions
-
-instance HasEnvDefinitions Parser
 
 spec :: Spec
 spec = do

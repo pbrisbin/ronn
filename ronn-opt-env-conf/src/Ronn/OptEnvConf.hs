@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 -- |
 --
 -- Module      : Ronn.OptEnvConf
@@ -7,8 +9,19 @@
 -- Stability   : experimental
 -- Portability : POSIX
 module Ronn.OptEnvConf
-  ( module X
+  ( optSynopsis
+  , optDefinitions
+  , envDefinitions
   ) where
 
-import Ronn.OptEnvConf.Env as X
-import Ronn.OptEnvConf.Opt as X
+import Prelude
+
+import OptEnvConf (Parser)
+import Ronn (HasSections (..))
+import Ronn.OptEnvConf.Env
+import Ronn.OptEnvConf.Opt
+
+instance HasSections Parser where
+  getSynopsis = Just . optSynopsis
+  getOptDefinitions = Just . optDefinitions
+  getEnvDefinitions = Just . envDefinitions

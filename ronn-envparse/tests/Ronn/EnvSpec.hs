@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-orphans #-}
-
 -- |
 --
 -- Module      : Ronn.EnvSpec
@@ -15,16 +13,9 @@ module Ronn.EnvSpec
 import Prelude
 
 import Env
-import Ronn.Env
+import Ronn.Env ()
 import Ronn.Test
 import Test.Hspec
-
-instance HasSynopsis (Parser e)
-
-instance HasOptDefinitions (Parser e)
-
-instance HasEnvDefinitions (Parser e) where
-  getEnvDefinitions = Just . envDefinitions
 
 spec :: Spec
 spec = do

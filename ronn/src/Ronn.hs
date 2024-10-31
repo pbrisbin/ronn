@@ -11,6 +11,10 @@ module Ronn
   , module Ronn.Render
   , ronnFilePath
 
+    -- * Parser-based sections
+  , HasSections (..)
+  , getSections
+
     -- * Higher-level builders
   , synopsisSection
   , seeAlsoSection
@@ -22,6 +26,7 @@ where
 import Prelude
 
 import Data.List (intersperse, sort)
+import Data.Maybe (catMaybes)
 import Data.Text (Text, unpack)
 import Ronn.AST
 import Ronn.Render
@@ -31,6 +36,28 @@ ronnFilePath ronn =
   unpack ref.name <> "." <> show (manSectionNumber ref.section) <> ".ronn"
  where
   ref = ronn.name
+
+-- | Parser types can be made an instance of this for use with 'getSections'
+class HasSections p where
+  -- | Options parsers should produce @[-f|--foo] --bar@ synopsis parts
+  getSynopsis :: p a -> Maybe [Part]
+  getSynopsis _ = Nothing
+
+  -- | Options parsers should produce a list of option/help definitions
+  getOptDefinitions :: p a -> Maybe [Definition]
+  getOptDefinitions _ = Nothing
+
+  -- | Environment parsers should produce a list of variable/help definitions
+  getEnvDefinitions :: p a -> Maybe [Definition]
+  getEnvDefinitions _ = Nothing
+
+getSections :: HasSections p => Text -> p a -> [Section]
+getSections name p =
+  catMaybes
+    [ synopsisSection name <$> getSynopsis p
+    , definitionsSection "OPTIONS" <$> getOptDefinitions p
+    , definitionsSection "ENVIRONMENT" <$> getEnvDefinitions p
+    ]
 
 synopsisSection :: Text -> [Part] -> Section
 synopsisSection name = oneLineSection "SYNOPSIS" . (Code (Raw name) :)

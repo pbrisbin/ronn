@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 -- |
 --
 -- Module      : Ronn.Options.Applicative
@@ -29,7 +31,12 @@ import Options.Applicative.Types
   , OptTree (..)
   , Option (..)
   )
+import Ronn (HasSections (..))
 import Ronn.AST
+
+instance HasSections Parser where
+  getSynopsis = Just . optSynopsis
+  getOptDefinitions = Just . optDefinitions
 
 optSynopsis :: Parser a -> [Part]
 optSynopsis = go False . treeMapParser (const void)
