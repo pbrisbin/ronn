@@ -13,6 +13,7 @@ jobs:
           - ronn
           - ronn-envparse
           - ronn-opt-env-conf
+          - ronn-optparse-applicative
 
     steps:
       - uses: actions/checkout@v4
