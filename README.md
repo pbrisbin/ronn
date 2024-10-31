@@ -38,3 +38,12 @@ You can view the HTML produced by this process [here][example-html].
 
 [ronn-ng]: https://github.com/apjanke/ronn-ng
 [example-html]: #TODO
+
+## Bugs
+
+The following, when present in your parsers, are not tested and may not generate
+the correct Ronn content. Patches welcome.
+
+- Commands
+- Complex `<|>`-combinations
+- `many`/ `some`
