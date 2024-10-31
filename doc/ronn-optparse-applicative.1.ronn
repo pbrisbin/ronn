@@ -1,0 +1,18 @@
+ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
+======================================================================
+
+## SYNOPSIS
+
+`ronn-optparse-applicative` [`--debug`] [`-o`\|`--output`=<FILE>] <FILE>
+
+## OPTIONS
+
+  * `--debug`:
+    Enable debug
+
+  * `-o`, `--output`=<FILE>:
+    Output file (default "-")
+
+  * `FILE`:
+    Input file
+
