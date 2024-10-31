@@ -3,7 +3,7 @@ ronn(1) -- example ronn man-page
 
 ## SYNOPSIS
 
-`ronn` [`-h`] [`--help`] [`--debug`|`--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>
+`ronn` [`-h`] [`--help`] [`--debug`\|`--trace`] [`-o` <FILE>] [`--output`=<FILE>] <INPUT>
 
 ## DESCRIPTION
 

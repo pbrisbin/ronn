@@ -38,7 +38,7 @@ spec = do
                                   [ Code "ronn"
                                   , Brackets $ Code "-h"
                                   , Brackets $ Code "--help"
-                                  , Brackets $ mconcat [Code "--debug", "|", Code "--trace"]
+                                  , Brackets $ mconcat [Code "--debug", "\\|", Code "--trace"]
                                   , Brackets $ mconcat [Code "-o", " ", Variable "FILE"]
                                   , Brackets $ mconcat [Code "--output", "=", Variable "FILE"]
                                   , Variable "INPUT"
