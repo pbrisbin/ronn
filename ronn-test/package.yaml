@@ -1,15 +1,6 @@
-name: ronn-optparse-applicative
-version: 1.0.0.0
+name: ronn-test
+version: 0.0.0.0
 license: AGPL-3
-maintainer: Pat Brisbin
-category: Documentation
-github: pbrisbin/ronn
-synopsis: Produce Ronn from OptEnvConf
-description: Please see README.md
-
-extra-doc-files:
-  - README.md
-  - CHANGELOG.md
 
 language: GHC2021
 
@@ -56,16 +47,7 @@ default-extensions:
 library:
   source-dirs: src
   dependencies:
-    - optparse-applicative
+    - filepath
+    - hspec-golden
     - ronn
     - text
-tests:
-  spec:
-    main: Main.hs
-    source-dirs: tests
-    ghc-options: -threaded -rtsopts "-with-rtsopts=-N"
-    dependencies:
-      - hspec
-      - optparse-applicative
-      - ronn-optparse-applicative
-      - ronn-test

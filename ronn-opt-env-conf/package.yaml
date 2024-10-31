@@ -59,30 +59,14 @@ library:
     - opt-env-conf
     - ronn
     - text
+
 tests:
   spec:
     main: Main.hs
     source-dirs: tests
     ghc-options: -threaded -rtsopts "-with-rtsopts=-N"
     dependencies:
-      - filepath
       - hspec
-      - hspec-golden
       - opt-env-conf
-      - ronn
       - ronn-opt-env-conf
-      - text
-  # readme:
-  #   main: README.lhs
-  #   ghc-options: -pgmL markdown-unlit
-  #   dependencies:
-  #     - aeson
-  #     - bytestring
-  #     - directory
-  #     - dotenv
-  #     - github-app-token
-  #     - http-conduit
-  #     - http-types
-  #     - hspec
-  #     - markdown-unlit
-  #     - text
+      - ronn-test

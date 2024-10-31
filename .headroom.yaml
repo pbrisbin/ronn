@@ -30,6 +30,7 @@ source-paths:
   - ronn-opt-env-conf/tests
   - ronn-optparse-applicative/src
   - ronn-optparse-applicative/tests
+  - ronn-test/src
 
 ## If set to 'true', Headroom tries to detect whether any VCS (like GIT) is used
 ## for current project and if yes, it loads rules for ignored files and excludes
