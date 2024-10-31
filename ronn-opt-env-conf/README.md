@@ -10,8 +10,8 @@ Automatically create a `Ronn` value from `OptEnvConf.Parser`.
 
 See [the test][test] and [the result][golden].
 
-[test]: ./ronn-opt-env-conf/tests/Ronn/OptEnvConfSpec.hs
-[golden]: ./doc/ronn-opt-env-conf.1.ronn
+[test]: ./tests/Ronn/OptEnvConfSpec.hs
+[golden]: ./../doc/ronn-opt-env-conf.1.ronn
 
 ---
 

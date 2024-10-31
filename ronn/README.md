@@ -10,8 +10,8 @@ Describe and render Ronn documentation.
 
 See [the test][test] and [the result][golden].
 
-[test]: ./ronn/tests/Ronn/RenderSpec.hs
-[golden]: ./doc/ronn.1.ronn
+[test]: ./tests/Ronn/RenderSpec.hs
+[golden]: ./../doc/ronn.1.ronn
 
 ---
 
