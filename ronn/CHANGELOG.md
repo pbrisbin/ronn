@@ -1,4 +1,8 @@
-## [_Unreleased_](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.0.0...main)
+## [_Unreleased_](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.1.0...main)
+
+## [v1.1.1.0](https://github.com/pbrisbin/ronn/tree/ronn-v1.1.1.0)
+
+- Add `HasSections` and `getSections`
 
 ## [v1.1.0.0](https://github.com/pbrisbin/ronn/tree/ronn-v1.1.0.0)
 
