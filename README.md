@@ -29,22 +29,18 @@ sub-standard output in certain cases, or lack features such as cross-references.
 1. Import the `Ronn` module for the parsing library or libraries you use
 
    ```hs
-   import Ronn
-   import Ronn.Options.Applicative
+   import Ronn (Ronn(..), ManRef(..), ManSection(..), ronnToText)
+   import Ronn.Options.Applicative () -- HasSections instance only
    ```
 
-2. Use some helpers to produce `Ronn` from a parser:
+2. Use our helpers to produce a `Ronn` from a `Parser`:
 
    ```hs
    docs :: Parser a -> Ronn
    docs p = Ronn
     { name = ManRef "my-tool" ManSection1
     , description = ["My tool"]
-    , sections =
-        [ synopsisSection "my-tool" $ optSynopsis p
-        , definitionsSection "OPTIONS" $ optDefinitions p
-        -- more sections...
-        ]
+    , sections = getSections "my-tool" $ getSections p
     }
     ```
 
