@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 -- |
 --
 -- Module      : Ronn.Options.ApplicativeSpec
@@ -12,61 +14,34 @@ module Ronn.Options.ApplicativeSpec
 
 import Prelude
 
-import Data.Text (Text, unpack)
-import Data.Text.IO qualified as T
 import Options.Applicative
-import Ronn
 import Ronn.Options.Applicative
-import System.FilePath ((</>))
+import Ronn.Test
 import Test.Hspec
-import Test.Hspec.Golden
+
+instance HasSynopsis Parser where
+  getSynopsis = Just . optSynopsis
+
+instance HasOptDefinitions Parser where
+  getOptDefinitions = Just . optDefinitions
+
+instance HasEnvDefinitions Parser
 
 spec :: Spec
 spec = do
   specify "complete example" $
-    let
-      p :: Parser (Maybe Bool, FilePath, FilePath)
-      p =
-        (,,)
-          <$> optional (switch (long "debug" <> help "Enable debug"))
-          <*> option
-            str
-            ( mconcat
-                [ short 'o'
-                , long "output"
-                , help "Output file"
-                , metavar "FILE"
-                , value "-"
-                , showDefault
-                ]
-            )
-          <*> argument str (help "Input file" <> metavar "INPUT")
-    in
-      ronnGolden $
-        Ronn
-          { name = ManRef "ronn-optparse-applicative" ManSection1
-          , description = ["example Ronn from optparse-applicative"]
-          , sections =
-              [ Section
-                  { name = "SYNOPSIS"
-                  , content =
-                      [Groups [Lines [Line $ Code "ronn-optparse-applicative" : optSynopsis p]]]
-                  }
-              , Section
-                  { name = "OPTIONS"
-                  , content = [Definitions $ optDefinitions p]
-                  }
+    ronnGolden "optparse-applicative" $
+      (,,)
+        <$> optional (switch (long "debug" <> help "Enable debug"))
+        <*> option
+          (str @String)
+          ( mconcat
+              [ short 'o'
+              , long "output"
+              , help "Output file"
+              , metavar "FILE"
+              , value "-"
+              , showDefault
               ]
-          }
-
-ronnGolden :: Ronn -> Golden Text
-ronnGolden ronn =
-  Golden
-    { output = ronnToText ronn
-    , encodePretty = unpack
-    , writeToFile = T.writeFile
-    , readFromFile = T.readFile
-    , goldenFile = "../doc" </> ronnFilePath ronn
-    , actualFile = Nothing
-    , failFirstTime = False
-    }
+          )
+        <*> argument (str @String) (help "Input file" <> metavar "INPUT")

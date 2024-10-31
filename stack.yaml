@@ -5,6 +5,7 @@ packages:
   - ronn-envparse
   - ronn-opt-env-conf
   - ronn-optparse-applicative
+  - ronn-test
 
 extra-deps:
   - opt-env-conf-0.6.0.2
