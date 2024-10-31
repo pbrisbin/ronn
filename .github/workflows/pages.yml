@@ -1,0 +1,61 @@
+on:
+  push:
+    branches: main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Install ronn
+        run: |
+          gem install --user ronn-ng
+          echo "$HOME/.local/share/gem/ruby/3.0.0/bin" >>"$GITHUB_PATH"
+
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            doc
+
+      - name: Generate Ronn HTML
+        run: ronn --style toc --html doc/*.ronn
+
+      - name: Copy to _site
+        run: |
+          mkdir -p _site
+          cp -v ./doc/*.html ./_site
+
+      - name: Create _site/index.html
+        run: |
+          {
+            echo '<html>'
+            echo '<body>'
+            echo '<h1>Ronn Examples</h1>'
+            echo '<ul>'
+
+            for x in doc/*.html; do
+              printf '<li><a href="/ronn/%s">%s</a></li>' \
+                "$(basename "$x")" \
+                "$(basename "$x" .html)"
+            done
+
+            echo '</ul>'
+            echo '</body>'
+            echo '</html>'
+          } >./_site/index.html
+
+      - uses: actions/configure-pages@v3
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v1
