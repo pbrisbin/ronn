@@ -10,8 +10,8 @@ Automatically create a `Ronn` value from `Options.Applicative.Parser`.
 
 See [the test][test] and [the result][golden].
 
-[test]: ./ronn-optparse-applicative/tests/Ronn/Options.Applicative.hs
-[golden]: ./doc/ronn-optparse-applicative.1.ronn
+[test]: ./tests/Ronn/Options/ApplicativeSpec.hs
+[golden]: ./../doc/ronn-optparse-applicative.1.ronn
 
 ---
 

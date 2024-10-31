@@ -10,8 +10,8 @@ Automatically create a `Ronn` value from `Env.Parser`.
 
 See [the test][test] and [the result][golden].
 
-[test]: ./ronn-envparse/tests/Ronn/EnvSpec.hs
-[golden]: ./doc/ronn-envparse.1.ronn
+[test]: ./tests/Ronn/EnvSpec.hs
+[golden]: ./../doc/ronn-envparse.1.ronn
 
 ---
 
