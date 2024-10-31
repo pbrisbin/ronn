@@ -24,6 +24,46 @@ sub-standard output in certain cases, or lack features such as cross-references.
 - [`ronn-opt-env-conf`](./ronn-opt-env-conf): `OptEnvConf.Parser -> Ronn`
 - [`ronn-optparse-applicative`](./ronn-optparse-applicative): `Options.Applicative.Parser -> Ronn`
 
+## Usage
+
+1. Import the `Ronn` module for the parsing library or libraries you use
+
+   ```hs
+   import Ronn
+   import Ronn.Options.Applicative
+   ```
+
+2. Use some helpers to produce `Ronn` from a parser:
+
+   ```hs
+   docs :: Parser a -> Ronn
+   docs p = Ronn
+    { name = ManRef "my-tool" ManSection1
+    , description = ["My tool"]
+    , sections =
+        [ synopsisSection "my-tool" $ optSynopsis p
+        , definitionsSection "OPTIONS" $ optDefinitions p
+        -- more sections...
+        ]
+    }
+    ```
+
+3. Update your `main` with a hidden argument that uses this function on your
+   actual parser:
+
+   ```diff
+    main :: IO ()
+    main = do
+   +  getArgs >>= \case
+   +    ["render-docs"] -> do
+   +      T.putStrLn $ ronnToText $ docs optionsParser
+   +      exitSuccess
+   +    _ -> pure ()
+   +
+      options <- parseOptions optionsParser
+      run options
+   ```
+
 ## Examples
 
 For example Ronn produced by these packages, [see here](./doc/ronn.1.ronn). You
