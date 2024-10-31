@@ -1,5 +1,5 @@
 name: ronn-optparse-applicative
-version: 1.0.0.0
+version: 1.0.1.0
 license: AGPL-3
 maintainer: Pat Brisbin
 category: Documentation
@@ -57,7 +57,7 @@ library:
   source-dirs: src
   dependencies:
     - optparse-applicative
-    - ronn
+    - ronn >= 1.1.1.0 # HasSections
     - text
 tests:
   spec:
