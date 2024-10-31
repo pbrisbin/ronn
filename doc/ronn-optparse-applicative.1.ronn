@@ -3,7 +3,7 @@ ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
 
 ## SYNOPSIS
 
-`ronn-optparse-applicative` [`--debug`] [`-o`\|`--output`=<FILE>] <FILE>
+`ronn-optparse-applicative` [`--debug`] [`-o`\|`--output`=<FILE>] <INPUT>
 
 ## OPTIONS
 
@@ -13,6 +13,6 @@ ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
   * `-o`, `--output`=<FILE>:
     Output file (default "-")
 
-  * `FILE`:
+  * `INPUT`:
     Input file
 

@@ -40,7 +40,7 @@ spec = do
                 , showDefault
                 ]
             )
-          <*> argument str (help "Input file" <> metavar "FILE")
+          <*> argument str (help "Input file" <> metavar "INPUT")
     in
       ronnGolden $
         Ronn
