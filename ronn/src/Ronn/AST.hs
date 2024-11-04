@@ -25,6 +25,7 @@ import Prelude
 
 import Data.String (IsString (..))
 import Data.Text (Text, pack)
+import Ronn.Indent
 import Ronn.ManRef
 
 data Ronn = Ronn
@@ -61,12 +62,25 @@ data Group
 instance IsString Group where
   fromString = Lines . pure . fromString
 
+instance Indentable Group where
+  indent n = \case
+    g@Title {} -> g
+    g@Header {} -> g
+    Lines ls -> Lines $ map (indent n) ls
+
 newtype Line = Line
   { unwrap :: [Part]
   }
 
 instance IsString Line where
   fromString = Line . pure . fromString
+
+instance Indentable Line where
+  indent n = \case
+    Line [] -> Line []
+    Line (p : ps) -> Line $ (spaces <> p) : ps
+   where
+    spaces = Raw $ pack $ replicate (fromIntegral n) ' '
 
 data Part
   = -- | 'Concat' joins 'Part's without automaticaly inserting a space

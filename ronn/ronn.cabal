@@ -27,6 +27,7 @@ library
       Ronn
       Ronn.Argument
       Ronn.AST
+      Ronn.Indent
       Ronn.ManRef
       Ronn.Render
   other-modules:

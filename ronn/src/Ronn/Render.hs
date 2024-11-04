@@ -19,7 +19,9 @@ import Prelude
 
 import Data.Text (Text, pack)
 import Data.Text qualified as T
+import Numeric.Natural
 import Ronn.AST
+import Ronn.Indent
 
 ronnToText :: Ronn -> Text
 ronnToText ronn =
@@ -32,17 +34,17 @@ ronnSectionToGroups :: Section -> [Group]
 ronnSectionToGroups section =
   Header section.name : concatMap (ronnContentToGroups 0) section.content
 
-ronnContentToGroups :: Int -> Content -> [Group]
+ronnContentToGroups :: Natural -> Content -> [Group]
 ronnContentToGroups indentLevel = \case
   Definitions defns ->
     concatMap (ronnDefinitionToGroups $ indentLevel + 2) defns
-  Groups gs -> map (indentRonnGroup indentLevel) gs
+  Groups gs -> map (indent indentLevel) gs
 
-ronnDefinitionToGroups :: Int -> Definition -> [Group]
+ronnDefinitionToGroups :: Natural -> Definition -> [Group]
 ronnDefinitionToGroups indentLevel defn =
   [ Lines
-      [ indentRonnLine indentLevel $ Line ["* " <> defn.name <> ":"]
-      , indentRonnLine nextIndentLevel defn.description
+      [ indent indentLevel $ Line ["* " <> defn.name <> ":"]
+      , indent nextIndentLevel defn.description
       ]
   ]
     <> nested
@@ -92,17 +94,3 @@ manRefToText ref =
 
 ronnLineLength :: Line -> Int
 ronnLineLength = T.length . ronnLineToText
-
-indentRonnGroup :: Int -> Group -> Group
-indentRonnGroup indentLevel = \case
-  g@Title {} -> g
-  g@Header {} -> g
-  Lines ls -> Lines $ map (indentRonnLine indentLevel) ls
-
--- | Prepends the given number of spaces to the first 'Part' of the line
-indentRonnLine :: Int -> Line -> Line
-indentRonnLine n = \case
-  Line [] -> Line []
-  Line (p : ps) -> Line $ (spaces <> p) : ps
- where
-  spaces = Raw $ pack $ replicate n ' '
