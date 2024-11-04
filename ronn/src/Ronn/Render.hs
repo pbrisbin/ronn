@@ -41,7 +41,8 @@ ronnTitleToGroup title =
 
 ronnSectionToGroups :: Section -> [Group]
 ronnSectionToGroups section =
-  Header section.name : concatMap (ronnContentToGroups 0) section.content
+  Lines [Line ["##", Raw section.name]]
+    : concatMap (ronnContentToGroups 0) section.content
 
 ronnContentToGroups :: Natural -> Content -> [Group]
 ronnContentToGroups indentLevel = \case
@@ -62,12 +63,7 @@ ronnDefinitionToGroups indentLevel defn =
   nextIndentLevel = indentLevel + 2
 
 ronnGroupToText :: Group -> Text
-ronnGroupToText = T.unlines . map ronnLineToText . ronnGroupToLines
-
-ronnGroupToLines :: Group -> [Line]
-ronnGroupToLines = \case
-  Header name -> [Line ["##", Raw name]]
-  Lines ls -> ls
+ronnGroupToText = T.unlines . map ronnLineToText . (.unwrap)
 
 ronnNameLine :: ManRef -> [Part] -> Line
 ronnNameLine ref =

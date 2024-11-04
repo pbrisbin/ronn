@@ -59,16 +59,15 @@ data Definition = Definition
   -- ^ More content can be optionally nested
   }
 
-data Group
-  = Header Text
-  | Lines [Line]
+newtype Group = Lines
+  { unwrap :: [Line]
+  }
 
 instance IsString Group where
   fromString = Lines . pure . fromString
 
 instance Indentable Group where
   indent n = \case
-    g@Header {} -> g
     Lines ls -> Lines $ map (indent n) ls
 
 newtype Line = Line
