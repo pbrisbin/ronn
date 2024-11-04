@@ -26,8 +26,11 @@ spec = do
     specify "a complete example" $
       ronnGolden $
         Ronn
-          { name = ManRef "ronn" ManSection1
-          , description = ["example ronn man-page"]
+          { title =
+              Title
+                { name = ManRef "ronn" ManSection1
+                , description = ["example ronn man-page"]
+                }
           , sections =
               [ Section
                   { name = "SYNOPSIS"

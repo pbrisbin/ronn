@@ -27,8 +27,17 @@ ronnToText :: Ronn -> Text
 ronnToText ronn =
   T.unlines $
     map ronnGroupToText $
-      Title ronn.name ronn.description
+      ronnTitleToGroup ronn.title
         : concatMap ronnSectionToGroups ronn.sections
+
+ronnTitleToGroup :: Title -> Group
+ronnTitleToGroup title =
+  Lines
+    [ nameLine
+    , Line [Raw $ T.replicate (ronnLineLength nameLine) "="]
+    ]
+ where
+  nameLine = ronnNameLine title.name title.description
 
 ronnSectionToGroups :: Section -> [Group]
 ronnSectionToGroups section =
@@ -57,11 +66,6 @@ ronnGroupToText = T.unlines . map ronnLineToText . ronnGroupToLines
 
 ronnGroupToLines :: Group -> [Line]
 ronnGroupToLines = \case
-  Title ref description ->
-    let nameLine = ronnNameLine ref description
-    in  [ nameLine
-        , Line [Raw $ T.replicate (ronnLineLength nameLine) "="]
-        ]
   Header name -> [Line ["##", Raw name]]
   Lines ls -> ls
 

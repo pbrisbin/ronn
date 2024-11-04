@@ -8,6 +8,7 @@
 -- Portability : POSIX
 module Ronn.AST
   ( Ronn (..)
+  , Title (..)
   , Section (..)
   , Content (..)
   , Definition (..)
@@ -29,9 +30,13 @@ import Ronn.Indent
 import Ronn.ManRef
 
 data Ronn = Ronn
+  { title :: Title
+  , sections :: [Section]
+  }
+
+data Title = Title
   { name :: ManRef
   , description :: [Part]
-  , sections :: [Section]
   }
 
 data Section = Section
@@ -55,8 +60,7 @@ data Definition = Definition
   }
 
 data Group
-  = Title ManRef [Part]
-  | Header Text
+  = Header Text
   | Lines [Line]
 
 instance IsString Group where
@@ -64,7 +68,6 @@ instance IsString Group where
 
 instance Indentable Group where
   indent n = \case
-    g@Title {} -> g
     g@Header {} -> g
     Lines ls -> Lines $ map (indent n) ls
 

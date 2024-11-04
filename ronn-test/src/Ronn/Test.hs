@@ -32,7 +32,10 @@ ronnGolden name p =
  where
   ronn =
     Ronn
-      { name = ManRef ("ronn-" <> name) ManSection1
-      , description = ["example Ronn from", Raw name]
+      { title =
+          Title
+            { name = ManRef ("ronn-" <> name) ManSection1
+            , description = ["example Ronn from", Raw name]
+            }
       , sections = getSections ("ronn-" <> name) p
       }

@@ -33,9 +33,10 @@ import Ronn.Render
 
 ronnFilePath :: Ronn -> FilePath
 ronnFilePath ronn =
-  unpack ref.name <> "." <> show (manSectionNumber ref.section) <> ".ronn"
- where
-  ref = ronn.name
+  unpack ronn.title.name.name
+    <> "."
+    <> show (manSectionNumber ronn.title.name.section)
+    <> ".ronn"
 
 -- | Parser types can be made an instance of this for use with 'getSections'
 class HasSections p where
