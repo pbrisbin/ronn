@@ -57,7 +57,7 @@ library:
   source-dirs: src
   dependencies:
     - optparse-applicative
-    - ronn >= 1.1.1.0 # HasSections
+    - ronn >= 1.1.2.0 # getCmdSections
     - text
 tests:
   spec:

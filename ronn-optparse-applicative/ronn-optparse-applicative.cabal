@@ -48,7 +48,7 @@ library
   build-depends:
       base <5
     , optparse-applicative
-    , ronn >=1.1.1.0
+    , ronn >=1.1.2.0
     , text
   default-language: GHC2021
   if impl(ghc >= 9.8)
