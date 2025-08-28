@@ -47,6 +47,10 @@ class HasSections p where
   getOptDefinitions :: p a -> Maybe [Definition]
   getOptDefinitions _ = Nothing
 
+  -- | Options parsers should produce a list of command/help definitions
+  getCmdDefinitions :: p a -> Maybe [Definition]
+  getCmdDefinitions _ = Nothing
+
   -- | Environment parsers should produce a list of variable/help definitions
   getEnvDefinitions :: p a -> Maybe [Definition]
   getEnvDefinitions _ = Nothing
@@ -56,6 +60,7 @@ getSections name p =
   catMaybes
     [ synopsisSection name <$> getSynopsis p
     , definitionsSection "OPTIONS" <$> getOptDefinitions p
+    , definitionsSection "COMMANDS" <$> getCmdDefinitions p
     , definitionsSection "ENVIRONMENT" <$> getEnvDefinitions p
     ]
 
