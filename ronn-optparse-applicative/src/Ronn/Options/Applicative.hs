@@ -16,7 +16,9 @@ module Ronn.Options.Applicative
 import Prelude
 
 import Control.Monad (void)
+import Data.Foldable (toList)
 import Data.List (intersperse, sortBy)
+import Data.List.NonEmpty (nonEmpty)
 import Data.String (IsString (..))
 import Data.Text (Text)
 import Options.Applicative (Parser)
@@ -30,13 +32,15 @@ import Options.Applicative.Types
   , OptReader (..)
   , OptTree (..)
   , Option (..)
+  , ParserInfo (..)
   )
 import Ronn (HasSections (..))
 import Ronn.AST
 
 instance HasSections Parser where
   getSynopsis = Just . optSynopsis
-  getOptDefinitions = Just . optDefinitions
+  getOptDefinitions = fmap toList . nonEmpty . optDefinitions
+  getCmdDefinitions = fmap toList . nonEmpty . cmdDefinitions
 
 optSynopsis :: Parser a -> [Part]
 optSynopsis = go False . treeMapParser (const void)
@@ -69,36 +73,54 @@ optSynopsisPart o = bracketize go
       case propShowDefault $ optProps o of
         Nothing -> Variable $ fromString $ propMetaVar $ optProps o
         Just {} -> Brackets $ fromString $ propMetaVar $ optProps o
-    CmdReader {} -> "" -- TODO
+    CmdReader {} -> Variable $ fromString $ propMetaVar $ optProps o
   bracketize = case propShowDefault $ optProps o of
     Nothing -> id
     Just {} -> Brackets
 
 optDefinitions :: Parser a -> [Definition]
-optDefinitions = mapParser optDefinition
+optDefinitions = concat . mapParser optDefinition
 
-optDefinition :: a -> Option x -> Definition
-optDefinition _ o =
-  Definition
-    { name = case optMain o of
-        OptReader names _ _ ->
-          let mv = propMetaVar $ optProps o
-          in  Concat $ intersperse ", " $ renderNames (Just mv) names
-        FlagReader names _ ->
-          Concat $ intersperse ", " $ renderNames Nothing names
-        ArgReader {} -> Code $ fromString $ propMetaVar $ optProps o
-        CmdReader {} -> undefined -- TODO
-    , description =
-        let
-          help = Raw (docToText $ propHelp $ optProps o)
-          suffix =
-            maybe [] (pure . Parens . ("default " <>) . fromString) $
-              propShowDefault $
-                optProps o
-        in
-          Line $ help : suffix
-    , content = Nothing
-    }
+cmdDefinitions :: Parser a -> [Definition]
+cmdDefinitions = concat . mapParser cmdDefinition
+
+optDefinition :: a -> Option x -> [Definition]
+optDefinition _ o = case optMain o of
+  OptReader names _ _ ->
+    let mv = propMetaVar $ optProps o
+    in  [basicDefinition $ Concat $ intersperse ", " $ renderNames (Just mv) names]
+  FlagReader names _ ->
+    [basicDefinition $ Concat $ intersperse ", " $ renderNames Nothing names]
+  ArgReader {} ->
+    [basicDefinition $ Code $ fromString $ propMetaVar $ optProps o]
+  CmdReader {} -> []
+ where
+  basicDefinition name = Definition {name, description = basicDescription, content = Nothing}
+  basicDescription =
+    let
+      help = Raw (docToText $ propHelp $ optProps o)
+      suffix =
+        maybe [] (pure . Parens . ("default " <>) . fromString) $
+          propShowDefault $
+            optProps o
+    in
+      Line $ help : suffix
+
+cmdDefinition :: a -> Option x -> [Definition]
+cmdDefinition _ o = case optMain o of
+  OptReader {} -> []
+  FlagReader {} -> []
+  ArgReader {} -> []
+  CmdReader _ cmds ->
+    map
+      ( \(cmd, info) ->
+          Definition
+            { name = Code $ fromString cmd
+            , description = Line $ pure $ Raw $ docToText $ infoProgDesc info
+            , content = Nothing
+            }
+      )
+      $ reverse cmds
 
 docToText :: Chunk Doc -> Text
 docToText =

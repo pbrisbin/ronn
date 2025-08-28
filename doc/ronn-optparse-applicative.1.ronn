@@ -3,7 +3,7 @@ ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
 
 ## SYNOPSIS
 
-`ronn-optparse-applicative` [`--debug`] [`-o`\|`--output`=<FILE>] <INPUT>
+`ronn-optparse-applicative` [`--debug`] [`-o`\|`--output`=<FILE>] <INPUT> <COMMAND>
 
 ## OPTIONS
 
@@ -15,4 +15,12 @@ ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
 
   * `INPUT`:
     Input file
+
+## COMMANDS
+
+  * `serve`:
+    Run the server
+
+  * `build`:
+    Build the project
 

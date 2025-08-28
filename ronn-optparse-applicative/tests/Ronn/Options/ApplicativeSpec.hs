@@ -21,7 +21,7 @@ spec :: Spec
 spec = do
   specify "complete example" $
     ronnGolden "optparse-applicative" $
-      (,,)
+      (,,,)
         <$> optional (switch (long "debug" <> help "Enable debug"))
         <*> option
           (str @String)
@@ -35,3 +35,19 @@ spec = do
               ]
           )
         <*> argument (str @String) (help "Input file" <> metavar "INPUT")
+        <*> subparser
+          ( command
+              "serve"
+              ( info
+                  (pure ())
+                  (progDesc "Run the server")
+              )
+              <> command
+                "build"
+                ( info
+                    (pure ())
+                    (progDesc "Build the project")
+                )
+              <> metavar "COMMAND"
+              <> help "Command to run"
+          )
