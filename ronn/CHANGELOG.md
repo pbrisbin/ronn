@@ -1,10 +1,14 @@
 ## [_Unreleased_](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.1.0...main)
 
-## [v1.1.1.0](https://github.com/pbrisbin/ronn/tree/ronn-v1.1.1.0)
+## [v1.1.2.0](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.1.0...ronn-v1.1.2.0)
+
+- Add `getCmdSections` to `HasSections` to support `# COMMANDS`
+
+## [v1.1.1.0](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.0.0...ronn-v1.1.1.0)
 
 - Add `HasSections` and `getSections`
 
-## [v1.1.0.0](https://github.com/pbrisbin/ronn/tree/ronn-v1.1.0.0)
+## [v1.1.0.0](https://github.com/pbrisbin/ronn/compare/ronn-v1.0.0.0...ronn-v1.1.0.0)
 
 - Export more `...ToText` functions
 - Strengthen `ManRef` types
