@@ -11,4 +11,3 @@ ronn-envparse(1) -- example Ronn from envparse
 
   * OUTPUT:
     Output file
-

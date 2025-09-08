@@ -30,7 +30,7 @@ fromHelpLine :: String -> Definition
 fromHelpLine x =
   Definition
     { name
-    , description = Line [help]
+    , description = [help]
     , content = Nothing
     }
  where

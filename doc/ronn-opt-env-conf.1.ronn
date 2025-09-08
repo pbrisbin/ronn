@@ -26,4 +26,3 @@ ronn-opt-env-conf(1) -- example Ronn from opt-env-conf
 
   * `INPUT`=<FILE>:
     Input file
-

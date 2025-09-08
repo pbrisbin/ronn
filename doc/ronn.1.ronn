@@ -7,7 +7,9 @@ ronn(1) -- example ronn man-page
 
 ## DESCRIPTION
 
-This is an example man-page to show how rendering the AST looks.
+This is an example man-page to show how rendering the AST looks. This
+description wouldn't normally be this long, but we want to verify the
+implementation reflows long lines.
 
 ## OPTIONS
 
@@ -42,4 +44,3 @@ This is an example man-page to show how rendering the AST looks.
 ## SEE ALSO
 
 **markdown(7)**, **roff(7)**
-
