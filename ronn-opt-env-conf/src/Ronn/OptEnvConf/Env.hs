@@ -33,17 +33,17 @@ envDocDefinition :: EnvDoc -> Definition
 envDocDefinition doc =
   Definition
     { name
-    , description = Line $ maybe [] (pure . fromString) $ envDocHelp doc
+    , description = maybe [] (pure . fromString) $ envDocHelp doc
     , content = Nothing
     }
  where
   name =
-    Concat $
-      addArgument $
-        intersperse "|" $
-          map (Code . fromString) $
-            toList $
-              envDocVars doc
+    Concat
+      $ addArgument
+      $ intersperse "|"
+      $ map (Code . fromString)
+      $ toList
+      $ envDocVars doc
 
   addArgument = case envDocMetavar doc of
     Nothing -> id

@@ -32,10 +32,10 @@ optSynopsis = go False . parserOptDocs
     AnyDocsAnd ds -> concatMap (go True) ds
     AnyDocsOr [AnyDocsSingle (Just d)] -> [Brackets $ optDocPart d] -- optional d
     AnyDocsOr ds ->
-      [ (if nested then Parens else id) $
-          Concat $
-            intersperse " \\| " $
-              concatMap (go True) ds
+      [ (if nested then Parens else id)
+          $ Concat
+          $ intersperse " \\| "
+          $ concatMap (go True) ds
       ]
     AnyDocsSingle Nothing -> []
     AnyDocsSingle (Just d) -> [optDocPart d]
@@ -50,9 +50,9 @@ optDocPart doc = bracketize go
           Nothing -> Variable $ fromString mv
           Just {} -> Brackets $ fromString mv
     | otherwise =
-        Concat $
-          intersperse "\\|" $
-            optDashedParts doc
+        Concat
+          $ intersperse "\\|"
+          $ optDashedParts doc
 
   bracketize = case optDocDefault doc of
     Nothing -> id
@@ -74,11 +74,10 @@ optDocDefinition doc =
   Definition
     { name
     , description =
-        Line $
-          concat
-            [ maybe [] (pure . fromString) $ optDocHelp doc
-            , maybe [] (\d -> pure $ Parens $ "default " <> fromString d) $ optDocDefault doc
-            ]
+        concat
+          [ maybe [] (pure . fromString) $ optDocHelp doc
+          , maybe [] (\d -> pure $ Parens $ "default " <> fromString d) $ optDocDefault doc
+          ]
     , content = Nothing
     }
  where

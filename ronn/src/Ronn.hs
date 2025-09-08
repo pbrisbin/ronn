@@ -71,22 +71,22 @@ seeAlsoSection :: [ManRef] -> Section
 seeAlsoSection refs =
   oneLineSection
     "SEE ALSO"
-    [ mconcat $
-        intersperse ", " $
-          map Ref $
-            sort refs
+    [ mconcat
+        $ intersperse ", "
+        $ map Ref
+        $ sort refs
     ]
 
 oneLineSection :: Text -> [Part] -> Section
 oneLineSection name ps =
   Section
     { name
-    , content = [Groups [Lines [Line ps]]]
+    , content = [Line ps]
     }
 
 definitionsSection :: Text -> [Definition] -> Section
 definitionsSection name definitions =
   Section
     { name
-    , content = [Definitions definitions]
+    , content = map Defn definitions
     }

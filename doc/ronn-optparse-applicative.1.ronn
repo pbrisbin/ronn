@@ -23,4 +23,3 @@ ronn-optparse-applicative(1) -- example Ronn from optparse-applicative
 
   * `build`:
     Build the project
-

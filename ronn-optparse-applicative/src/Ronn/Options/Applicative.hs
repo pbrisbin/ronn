@@ -53,10 +53,10 @@ optSynopsis = go False . treeMapParser (const void)
       | FlagReader {} <- optMain o -> [Brackets $ optSynopsisPart o] -- optional o
       | otherwise -> [optSynopsisPart o]
     AltNode _ ts ->
-      [ (if nested then Parens else id) $
-          Concat $
-            intersperse " \\| " $
-              concatMap (go True) ts
+      [ (if nested then Parens else id)
+          $ Concat
+          $ intersperse " \\| "
+          $ concatMap (go True) ts
       ]
     BindNode t -> go True t
 
@@ -100,11 +100,11 @@ optDefinition _ o = case optMain o of
     let
       help = Raw (docToText $ propHelp $ optProps o)
       suffix =
-        maybe [] (pure . Parens . ("default " <>) . fromString) $
-          propShowDefault $
-            optProps o
+        maybe [] (pure . Parens . ("default " <>) . fromString)
+          $ propShowDefault
+          $ optProps o
     in
-      Line $ help : suffix
+      help : suffix
 
 cmdDefinition :: a -> Option x -> [Definition]
 cmdDefinition _ o = case optMain o of
@@ -116,7 +116,7 @@ cmdDefinition _ o = case optMain o of
       ( \(cmd, info) ->
           Definition
             { name = Code $ fromString cmd
-            , description = Line $ pure $ Raw $ docToText $ infoProgDesc info
+            , description = pure $ Raw $ docToText $ infoProgDesc info
             , content = Nothing
             }
       )

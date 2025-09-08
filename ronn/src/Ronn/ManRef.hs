@@ -17,6 +17,7 @@ import Prelude
 
 import Data.Ord
 import Data.Text
+import Prettyprinter (Pretty (..), parens)
 
 data ManRef = ManRef
   { name :: Text
@@ -26,6 +27,9 @@ data ManRef = ManRef
 
 instance Ord ManRef where
   compare a b = comparing (.section) a b <> comparing (.name) a b
+
+instance Pretty ManRef where
+  pretty (ManRef n s) = pretty n <> parens (pretty s)
 
 data ManSection
   = ManSection1
@@ -37,6 +41,9 @@ data ManSection
   | ManSection7
   | ManSection8
   deriving stock (Eq, Ord, Bounded, Enum, Show)
+
+instance Pretty ManSection where
+  pretty = pretty . manSectionNumber
 
 manSectionNumber :: ManSection -> Int
 manSectionNumber = (+ 1) . fromEnum
