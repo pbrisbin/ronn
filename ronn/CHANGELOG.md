@@ -1,4 +1,10 @@
-## [_Unreleased_](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.1.0...main)
+## [_Unreleased_](https://github.com/pbrisbin/ronn/compare/ronn-v1.2.0.0...main)
+
+## [v1.2.0.0](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.2.0...ronn-v1.2.0.0)
+
+- Simplify AST, distinguish lines from paragraphs
+- Reflow paragraphs (`Para`) at 80 columns
+- Don't print empty trailing line
 
 ## [v1.1.2.0](https://github.com/pbrisbin/ronn/compare/ronn-v1.1.1.0...ronn-v1.1.2.0)
 

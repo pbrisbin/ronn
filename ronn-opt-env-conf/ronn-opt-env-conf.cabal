@@ -1,11 +1,11 @@
 cabal-version: 1.18
 
--- This file has been generated from package.yaml by hpack version 0.37.0.
+-- This file has been generated from package.yaml by hpack version 0.38.0.
 --
 -- see: https://github.com/sol/hpack
 
 name:           ronn-opt-env-conf
-version:        1.0.1.0
+version:        1.0.1.1
 synopsis:       Produce Ronn from OptEnvConf
 description:    Please see README.md
 category:       Documentation
@@ -50,7 +50,7 @@ library
   build-depends:
       base <5
     , opt-env-conf
-    , ronn >=1.1.1.0
+    , ronn >=1.2.0.0
     , text
   default-language: GHC2021
   if impl(ghc >= 9.8)
