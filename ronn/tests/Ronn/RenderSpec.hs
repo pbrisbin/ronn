@@ -14,7 +14,6 @@ import Prelude
 
 import Data.List (intersperse)
 import Data.Text (Text, unpack)
-import Data.Text qualified as T
 import Data.Text.IO qualified as T
 import Ronn
 import System.FilePath ((</>))
